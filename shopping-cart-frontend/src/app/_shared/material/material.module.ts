@@ -66,7 +66,8 @@ import {MatButtonModule} from "@angular/material/button";
     MatSnackBarModule,
     MatTableModule,
     MatSortModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+
   ],
   exports: [
     MatCheckboxModule,
