@@ -3,22 +3,22 @@ import {CommonModule} from '@angular/common';
 
 import {OrderRoutingModule} from './order-routing.module';
 import {SharedModule} from "@shared";
-import {OrderComponent} from './container';
-import { ItemListComponent } from './components/item-list';
-import { MatTableModule } from '@angular/material/table';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatSortModule } from '@angular/material/sort';
+import {OrderFormComponent} from './components/order-form';
+import {ItemListComponent} from './components/item-list';
+import {OrderComponent} from "./container";
 
 
 @NgModule({
-  declarations: [OrderComponent, ItemListComponent],
+  declarations: [
+    OrderFormComponent,
+    ItemListComponent,
+    OrderComponent
+  ],
   imports: [
     CommonModule,
     OrderRoutingModule,
     SharedModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
   ]
 })
-export class OrderModule { }
+export class OrderModule {
+}

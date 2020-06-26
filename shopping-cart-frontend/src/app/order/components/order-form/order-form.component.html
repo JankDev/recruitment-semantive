@@ -1,0 +1,50 @@
+<form (ngSubmit)="onSubmit()" [formGroup]="addressForm" novalidate>
+  <mat-card class="shipping-card">
+    <mat-card-header>
+      <mat-card-title>Shipping Information</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <label>
+              <input formControlName="name" matInput placeholder="Name">
+            </label>
+            <mat-error *ngIf="addressForm.controls['name'].hasError('required')">
+              Your name is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field class="full-width">
+            <label>
+              <input formControlName="age" matInput placeholder="Age" type="number">
+            </label>
+            <mat-error *ngIf="addressForm.controls['age'].hasError('required')">
+              Age is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-select formControlName="color" placeholder="Shirt color">
+            <mat-option *ngFor="let color of shirtColors" [value]="color">
+              {{color}}
+            </mat-option>
+          </mat-select>
+        </div>
+        <div class="col">
+          <mat-radio-group formControlName="size">
+            <mat-radio-button *ngFor="let size of shirtSizes" value="size">{{size}}</mat-radio-button>
+          </mat-radio-group>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <button color="primary" mat-raised-button type="submit">Submit</button>
+      <button color="primary" mat-raised-button type="submit">Save</button>
+    </mat-card-actions>
+  </mat-card>
+</form>
+
