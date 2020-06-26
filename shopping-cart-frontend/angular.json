@@ -129,6 +129,7 @@
   },
   "defaultProject": "shopping-cart-frontend",
   "cli": {
+    "defaultCollection": "@ngrx/schematics",
     "analytics": false
   }
 }
