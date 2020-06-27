@@ -1,15 +1,13 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {ReactiveFormsModule} from '@angular/forms';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {MatButtonModule} from '@angular/material/button';
-import {MatCardModule} from '@angular/material/card';
-import {MatInputModule} from '@angular/material/input';
-import {MatRadioModule} from '@angular/material/radio';
-import {MatSelectModule} from '@angular/material/select';
 
 import {OrderFormComponent} from './order-form.component';
+import {SharedModule} from "@shared";
+import {Product} from "@core/model/order/product";
+import {ProductColor} from "@core/model/order/product-color.enum";
+import {ProductSize} from "@core/model/order/product-size.enum";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
-describe('OrderComponent', () => {
+describe('OrderFormComponent', () => {
   let component: OrderFormComponent;
   let fixture: ComponentFixture<OrderFormComponent>;
 
@@ -17,13 +15,8 @@ describe('OrderComponent', () => {
     TestBed.configureTestingModule({
       declarations: [OrderFormComponent],
       imports: [
-        NoopAnimationsModule,
-        ReactiveFormsModule,
-        MatButtonModule,
-        MatCardModule,
-        MatInputModule,
-        MatRadioModule,
-        MatSelectModule,
+        SharedModule,
+        BrowserAnimationsModule
       ]
     }).compileComponents();
   }));
@@ -36,5 +29,26 @@ describe('OrderComponent', () => {
 
   it('should compile', () => {
     expect(component).toBeTruthy();
+  });
+
+  it("should emit product on save button click", () => {
+    spyOn(component.saveProduct, "emit");
+
+    const product: Product = {color: ProductColor.BLACK, size: ProductSize.XL};
+    component.addressForm.setValue({
+      name: "adam",
+      age: 20,
+      size: product.size,
+      color: product.color
+    })
+
+    const nativeElement = fixture.nativeElement;
+    const button = nativeElement.querySelector('#save-button');
+    button.dispatchEvent(new Event('click'));
+
+
+    fixture.detectChanges();
+
+    expect(component.saveProduct.emit).toHaveBeenCalledWith(product);
   });
 });

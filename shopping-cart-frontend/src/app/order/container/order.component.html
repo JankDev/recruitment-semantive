@@ -1,4 +1,7 @@
 <app-layout>
-  <order-form></order-form>
+  <order-form
+    (saveProduct)="addOrder($event)"
+  >
+  </order-form>
   <order-item-list></order-item-list>
 </app-layout>

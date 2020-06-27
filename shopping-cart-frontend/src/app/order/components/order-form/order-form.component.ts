@@ -1,5 +1,8 @@
-import {Component} from '@angular/core';
+import {Component, EventEmitter, Output} from '@angular/core';
 import {FormBuilder, Validators} from '@angular/forms';
+import {Product} from "@core/model/order/product";
+import {ProductSize} from "@core/model/order/product-size.enum";
+import {ProductColor} from "@core/model/order/product-color.enum";
 
 @Component({
   selector: 'order-form',
@@ -7,6 +10,7 @@ import {FormBuilder, Validators} from '@angular/forms';
   styleUrls: ['./order-form.component.scss']
 })
 export class OrderFormComponent {
+  @Output() saveProduct = new EventEmitter<Product>()
   addressForm = this.fb.group({
     name: [null, Validators.required],
     age: [null, Validators.required],
@@ -14,13 +18,21 @@ export class OrderFormComponent {
     size: [null, Validators.required]
   });
 
-  shirtSizes = ["S", "M", "L", "XL"]
-  shirtColors = ["green", "red", "blue", "white"];
+  productSizes = Object.values(ProductSize);
+  productColors = Object.values(ProductColor);
 
   constructor(private fb: FormBuilder) {
   }
 
   onSubmit() {
     alert('Thanks!');
+  }
+
+  save(): void {
+    const product: Product = {
+      color: this.addressForm.controls['color'].value,
+      size: this.addressForm.controls['size'].value
+    }
+    this.saveProduct.emit(product);
   }
 }

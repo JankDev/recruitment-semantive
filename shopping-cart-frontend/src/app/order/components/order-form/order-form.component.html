@@ -29,21 +29,21 @@
       <div class="row">
         <div class="col">
           <mat-select formControlName="color" placeholder="Shirt color">
-            <mat-option *ngFor="let color of shirtColors" [value]="color">
+            <mat-option *ngFor="let color of productColors" [value]="color">
               {{color}}
             </mat-option>
           </mat-select>
         </div>
         <div class="col">
           <mat-radio-group formControlName="size">
-            <mat-radio-button *ngFor="let size of shirtSizes" value="size">{{size}}</mat-radio-button>
+            <mat-radio-button *ngFor="let size of productSizes" [value]="size">{{size}}</mat-radio-button>
           </mat-radio-group>
         </div>
       </div>
     </mat-card-content>
     <mat-card-actions>
       <button color="primary" mat-raised-button type="submit">Submit</button>
-      <button color="primary" mat-raised-button type="submit">Save</button>
+      <button (click)="save()" color="primary" id="save-button" mat-raised-button type="button">Save</button>
     </mat-card-actions>
   </mat-card>
 </form>
