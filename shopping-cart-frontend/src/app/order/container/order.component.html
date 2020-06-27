@@ -1,6 +1,8 @@
 <app-layout>
   <order-form
-    (saveProduct)="addOrder($event)"
+    (submitOrder)="submitOrder($event)"
+    (saveProduct)="addItemToOrder($event)"
+    [isValidOrder]="isValidOrder$ | async"
   >
   </order-form>
   <order-item-list

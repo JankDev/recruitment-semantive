@@ -15,7 +15,8 @@ export interface State {
 export const initialState: State = {
   orders: [],
   currentOrder: {
-    items: []
+    items: [],
+    user: null
   },
   isLoading: false,
   error: null
@@ -52,6 +53,13 @@ export const reducer = createReducer(
       };
     }
 
+  }),
+  on(OrderStoreActions.submitOrder, (state, action) => {
+    console.log(action.payload);
+    return {
+      ...state,
+      isLoading: true
+    }
   })
 );
 

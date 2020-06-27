@@ -4,6 +4,7 @@ import {select, Store} from "@ngrx/store";
 import {RootState} from "@core/store/root-state";
 import {OrderStoreActions, OrderStoreSelectors} from "@core/store/order-store";
 import {map} from "rxjs/operators";
+import {User} from "@core/model/order/user";
 
 @Component({
   selector: 'app-order',
@@ -15,6 +16,10 @@ export class OrderComponent implements OnInit {
     select(OrderStoreSelectors.selectCurrentOrder),
     map(order => order.items),
   );
+  isValidOrder$ = this.store.pipe(
+    select(OrderStoreSelectors.selectCurrentOrder),
+    map(order => order.items.length > 0)
+  )
 
   constructor(private store: Store<RootState>) {
   }
@@ -22,7 +27,11 @@ export class OrderComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  addOrder(product: Product): void {
+  addItemToOrder(product: Product): void {
     this.store.dispatch(OrderStoreActions.addItemToOrder({payload: product}));
+  }
+
+  submitOrder(user: User): void {
+    this.store.dispatch(OrderStoreActions.submitOrder({payload: user}));
   }
 }

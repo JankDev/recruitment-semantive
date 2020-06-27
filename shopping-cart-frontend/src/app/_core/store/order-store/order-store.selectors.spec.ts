@@ -25,6 +25,7 @@ describe('OrderStore Selectors', () => {
       state = {
         ...state,
         currentOrder: {
+          user: null,
           items: [orderItem]
         }
       }

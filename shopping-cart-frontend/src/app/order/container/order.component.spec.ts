@@ -16,6 +16,7 @@ describe('OrderComponent', () => {
   let store: MockStore<RootState>
   let currentOrder = {
     items: [{amount: 1, product: {color: ProductColor.BLACK, size: ProductSize.XL}}],
+    user: null
   };
   let initialState: RootState = {
     orders: {
@@ -58,7 +59,7 @@ describe('OrderComponent', () => {
   it("should dispatch the addItemToOrder action if child emits", () => {
     spyOn(store, "dispatch")
     const product: Product = {color: ProductColor.BLACK, size: ProductSize.XL};
-    component.addOrder(product);
+    component.addItemToOrder(product);
 
     const expectedAction = OrderStoreActions.addItemToOrder({payload: product});
     expect(store.dispatch).toHaveBeenCalledWith(expectedAction);

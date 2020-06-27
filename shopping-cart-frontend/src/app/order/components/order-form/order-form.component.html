@@ -1,4 +1,4 @@
-<form (ngSubmit)="onSubmit()" [formGroup]="addressForm" novalidate>
+<form (ngSubmit)="submit()" [formGroup]="addressForm" novalidate>
   <mat-card class="shipping-card">
     <mat-card-header>
       <mat-card-title>Shipping Information</mat-card-title>
@@ -42,7 +42,7 @@
       </div>
     </mat-card-content>
     <mat-card-actions>
-      <button color="primary" mat-raised-button type="submit">Submit</button>
+      <button [disabled]="!isValidOrder" color="primary" mat-raised-button type="submit">Submit</button>
       <button (click)="save()" color="primary" id="save-button" mat-raised-button type="button">Save</button>
     </mat-card-actions>
   </mat-card>
