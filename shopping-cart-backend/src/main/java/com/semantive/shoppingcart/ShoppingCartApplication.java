@@ -1,13 +1,13 @@
-package com.semantive.shoppingcard;
+package com.semantive.shoppingcart;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ShoppingCardApplication {
+public class ShoppingCartApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(ShoppingCardApplication.class, args);
+        SpringApplication.run(ShoppingCartApplication.class, args);
     }
 
 }
