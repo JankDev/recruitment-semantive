@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {Product} from "@core/model/order/product";
-import {Store} from "@ngrx/store";
+import {select, Store} from "@ngrx/store";
 import {RootState} from "@core/store/root-state";
-import {OrderStoreActions} from "@core/store/order-store";
+import {OrderStoreActions, OrderStoreSelectors} from "@core/store/order-store";
+import {map} from "rxjs/operators";
 
 @Component({
   selector: 'app-order',
@@ -10,6 +11,10 @@ import {OrderStoreActions} from "@core/store/order-store";
   styleUrls: ['./order.component.scss']
 })
 export class OrderComponent implements OnInit {
+  currentOrderItems$ = this.store.pipe(
+    select(OrderStoreSelectors.selectCurrentOrder),
+    map(order => order.items),
+  );
 
   constructor(private store: Store<RootState>) {
   }

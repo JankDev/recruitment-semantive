@@ -1,10 +1,9 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatSortModule } from '@angular/material/sort';
-import { MatTableModule } from '@angular/material/table';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 
-import { ItemListComponent } from './item-list.component';
+import {ItemListComponent} from './item-list.component';
+import {CoreModule} from "@core";
+import {SharedModule} from "@shared";
 
 describe('ItemListComponent', () => {
   let component: ItemListComponent;
@@ -12,12 +11,11 @@ describe('ItemListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ItemListComponent ],
+      declarations: [ItemListComponent],
       imports: [
         NoopAnimationsModule,
-        MatPaginatorModule,
-        MatSortModule,
-        MatTableModule,
+        SharedModule,
+        CoreModule
       ]
     }).compileComponents();
   }));

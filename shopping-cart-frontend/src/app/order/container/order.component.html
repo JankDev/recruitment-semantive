@@ -3,5 +3,7 @@
     (saveProduct)="addOrder($event)"
   >
   </order-form>
-  <order-item-list></order-item-list>
+  <order-item-list
+    [data]="currentOrderItems$ | async"
+  ></order-item-list>
 </app-layout>
