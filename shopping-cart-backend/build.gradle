@@ -25,6 +25,9 @@ dependencies {
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     implementation 'io.r2dbc:r2dbc-postgresql'
 
+    implementation 'com.h2database:h2'
+    implementation 'io.r2dbc:r2dbc-h2'
+
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
@@ -37,17 +40,7 @@ test {
     useJUnitPlatform()
 }
 
-tasks.withType(JavaCompile) {
-    options.compilerArgs += "--enable-preview"
-}
 
-tasks.withType(Test) {
-    jvmArgs += "--enable-preview"
-}
-
-tasks.withType(JavaExec) {
-    jvmArgs += '--enable-preview'
-}
 asciidoctor {
     inputs.dir snippetsDir
     dependsOn test

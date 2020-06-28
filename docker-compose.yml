@@ -19,3 +19,5 @@ services:
     - "8080:8080"
     volumes:
       - ./shopping-cart-backend/src/:/app/src/
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev

@@ -1,0 +1,5 @@
+spring:
+  r2dbc:
+    password: postgres
+    username: semantive
+    url: r2dbc:postgresql://postgres/semantive
