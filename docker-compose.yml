@@ -7,7 +7,7 @@ services:
     volumes:
     - ./shopping-cart-frontend/src:/app/src
   postgres:
-    image: postgres
+    build: ./shopping-cart-backend/postgres-docker
     restart: always
     environment:
       - POSTGRES_USER=semantive
