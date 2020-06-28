@@ -13,3 +13,9 @@ services:
       - POSTGRES_USER=semantive
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=semantive
+  backend:
+    build: ./shopping-cart-backend
+    ports:
+    - "8080:8080"
+    volumes:
+      - ./shopping-cart-backend/src/:/app/src/
