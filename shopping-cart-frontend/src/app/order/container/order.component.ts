@@ -30,6 +30,9 @@ export class OrderComponent implements OnInit {
   productSizes$ = this.store.pipe(
     select(ProductStoreSelectors.selectProductSizes)
   );
+  isLoading$ = this.store.pipe(
+    select(OrderStoreSelectors.selectIsLoading)
+  );
 
   constructor(private store: Store<RootState>) {
   }

@@ -55,11 +55,25 @@ export const reducer = createReducer(
 
   }),
   on(OrderStoreActions.submitOrder, (state, action) => {
-    console.log(action.payload);
     return {
       ...state,
       isLoading: true
     }
-  })
+  }),
+  on(OrderStoreActions.submitOrderSuccess, (state, action) => {
+    return {
+      ...state,
+      isLoading: false,
+      currentOrder: {
+        items: [],
+        user: null
+      }
+    }
+  }),
+  on(OrderStoreActions.submitOrderFailure, (state, action) => ({
+    ...state,
+    isLoading: false,
+    error: action.error
+  })),
 );
 

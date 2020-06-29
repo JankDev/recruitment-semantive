@@ -1,6 +1,7 @@
 import {createAction, props} from '@ngrx/store';
-import {Product} from "@core/model/order/product";
+import {Product} from "@core/model/product/product";
 import {User} from "@core/model/order/user";
+import {OrderItem} from "@core/model/order/order-item";
 
 export const loadOrderStores = createAction(
   '[OrderStore] Load OrderStores'
@@ -28,10 +29,10 @@ export const submitOrder = createAction(
 
 export const submitOrderSuccess = createAction(
   '[OrderStore] Submit Order Success',
-  props<{ payload: any }>()
+  props<{ payload: OrderItem[] }>()
 );
 
 export const submitOrderFailure = createAction(
   '[OrderStore] Submit Order Failure',
-  props<{ error: any }>()
+  props<{ error: string }>()
 );

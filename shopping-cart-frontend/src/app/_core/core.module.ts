@@ -2,6 +2,9 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {RootStoreModule} from "@core/store";
+import {HttpClientModule} from "@angular/common/http";
+import {MAT_SNACK_BAR_DEFAULT_OPTIONS} from "@angular/material/snack-bar";
+import {SharedModule} from "@shared";
 
 
 @NgModule({
@@ -9,7 +12,19 @@ import {RootStoreModule} from "@core/store";
   imports: [
     CommonModule,
     BrowserAnimationsModule,
-    RootStoreModule
+    HttpClientModule,
+    RootStoreModule,
+    SharedModule
+  ],
+  providers: [
+    {
+      provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {
+        duration: 2500,
+        verticalPosition: "top",
+        horizontalPosition: "right"
+      }
+    }
   ]
 })
-export class CoreModule { }
+export class CoreModule {
+}

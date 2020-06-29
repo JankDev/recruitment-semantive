@@ -9,3 +9,7 @@ export const selectCurrentOrder = createSelector(
   selectOrderStoreState,
   state => state.currentOrder
 );
+export const selectIsLoading = createSelector(
+  selectOrderStoreState,
+  state => state.isLoading
+)

@@ -3,6 +3,7 @@ import {provideMockActions} from '@ngrx/effects/testing';
 import {Observable} from 'rxjs';
 
 import {ProductStoreEffects} from './product-store.effects';
+import {HttpClientTestingModule} from "@angular/common/http/testing";
 
 describe('ProductStoreEffects', () => {
   let actions$: Observable<any>;
@@ -10,6 +11,9 @@ describe('ProductStoreEffects', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [
+        HttpClientTestingModule
+      ],
       providers: [
         ProductStoreEffects,
         provideMockActions(() => actions$)

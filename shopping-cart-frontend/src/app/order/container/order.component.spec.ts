@@ -4,9 +4,12 @@ import {OrderComponent} from './order.component';
 import {CoreModule} from "@core";
 import {Product} from "@core/model/product/product";
 import {RootState} from "@core/store/root-state";
-import {OrderStoreActions} from "@core/store/order-store";
+import {OrderStoreActions, OrderStoreSelectors} from "@core/store/order-store";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {MockStore, provideMockStore} from "@ngrx/store/testing";
+import {MemoizedSelector} from "@ngrx/store";
+import * as fromOrderState from "@core/store/order-store/order-store.reducer";
+import {Order} from "@core/model/order/order";
 
 describe('OrderComponent', () => {
   let component: OrderComponent;
@@ -16,18 +19,20 @@ describe('OrderComponent', () => {
     items: [{amount: 1, product: {color: "BLACK", size: "XL"}}],
     user: null
   };
-  let initialState: RootState = {
-    products: null,
-    orders: {
-      currentOrder,
-      error: null,
-      isLoading: false,
-      orders: []
-    }
-
-  }
+  let initialState: RootState;
+  let mockCurrentOrderSelector: MemoizedSelector<fromOrderState.State, Order>;
 
   beforeEach(() => {
+    initialState = {
+      products: null,
+      orders: {
+        currentOrder,
+        error: null,
+        isLoading: false,
+        orders: []
+      }
+
+    };
     TestBed.configureTestingModule({
       declarations: [OrderComponent],
       imports: [
@@ -39,14 +44,17 @@ describe('OrderComponent', () => {
       ]
     })
       .compileComponents();
-  });
-
-  beforeEach(() => {
     fixture = TestBed.createComponent(OrderComponent);
     store = TestBed.inject(MockStore);
+    mockCurrentOrderSelector = store.overrideSelector(
+      OrderStoreSelectors.selectCurrentOrder,
+      currentOrder
+    );
+
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
+
 
   afterEach(() => {
     fixture.destroy();

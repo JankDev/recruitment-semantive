@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
 import {FormBuilder, Validators} from '@angular/forms';
 import {Product} from "@core/model/product/product";
 import {User} from "@core/model/order/user";
@@ -8,12 +8,14 @@ import {User} from "@core/model/order/user";
   selector: 'order-form',
   templateUrl: './order-form.component.html',
   styleUrls: ['./order-form.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class OrderFormComponent {
   @Input() isValidOrder: boolean;
   @Input() products: Product[];
-  @Input() productColors: string[];
-  @Input() productSizes: string[];
+  @Input() productColors: Set<string>;
+  @Input() productSizes: Set<string>;
+  @Input() isLoading: boolean;
 
   @Output() saveProduct = new EventEmitter<Product>();
   @Output() submitOrder = new EventEmitter<User>();
@@ -35,13 +37,12 @@ export class OrderFormComponent {
     }
 
     this.submitOrder.emit(user);
+    this.addressForm.reset();
   }
 
   save(): void {
-    const product: Product = {
-      color: this.addressForm.controls['color'].value,
-      size: this.addressForm.controls['size'].value
-    }
+    const product = this.products.find(p => p.size === this.addressForm.controls['size'].value &&
+      p.color === this.addressForm.controls['color'].value);
     this.saveProduct.emit(product);
   }
 }

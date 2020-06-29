@@ -1,5 +1,6 @@
 <form (ngSubmit)="submit()" [formGroup]="addressForm" novalidate>
   <mat-card class="shipping-card">
+    <mat-spinner *ngIf="isLoading"></mat-spinner>
     <mat-card-header>
       <mat-card-title>Shipping Information</mat-card-title>
     </mat-card-header>
@@ -47,4 +48,3 @@
     </mat-card-actions>
   </mat-card>
 </form>
-

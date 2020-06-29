@@ -1,8 +1,10 @@
-import {selectCurrentOrder, selectOrderStoreState} from "@core/store/order-store/order-store.selectors";
+import {
+  selectCurrentOrder,
+  selectIsLoading,
+  selectOrderStoreState
+} from "@core/store/order-store/order-store.selectors";
 import * as fromOrderStore from "@core/store/order-store/order-store.reducer";
-import {State} from "@core/store/order-store/order-store.reducer";
-import {ProductColor} from "@core/model/order/product-color.enum";
-import {ProductSize} from "@core/model/order/product-size.enum";
+import {orderStoreFeatureKey, State} from "@core/store/order-store/order-store.reducer";
 
 describe('OrderStore Selectors', () => {
   let state: State;
@@ -21,7 +23,7 @@ describe('OrderStore Selectors', () => {
   });
   describe("selectCurrentOrder", () => {
     it("should return the current order with its items", () => {
-      const orderItem = {amount: 1, product: {color: ProductColor.BLACK, size: ProductSize.XL}};
+      const orderItem = {amount: 1, product: {color: "BLACK", size: "XL"}};
       state = {
         ...state,
         currentOrder: {
@@ -36,5 +38,20 @@ describe('OrderStore Selectors', () => {
 
       expect(result.items).toContain(orderItem);
     })
+  });
+  describe("selectIsLoading", () => {
+    it("should return isLoading", () => {
+        state = {
+          ...state,
+          isLoading: true
+        }
+
+        const result = selectIsLoading({
+          [orderStoreFeatureKey]: state
+        })
+
+        expect(result).toBeTrue();
+      }
+    );
   })
 });

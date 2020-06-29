@@ -32,13 +32,14 @@ describe('OrderFormComponent', () => {
   it("should emit product on save button click", () => {
     spyOn(component.saveProduct, "emit");
 
-    const product: Product = {color: "BLACK", size: "XL"};
+    const product: Product = {id: 1, color: "BLACK", size: "XL"};
     component.addressForm.setValue({
       name: "adam",
       age: 20,
       size: product.size,
       color: product.color
     })
+    component.products = [product];
 
     const nativeElement = fixture.nativeElement;
     const button = nativeElement.querySelector('#save-button');
