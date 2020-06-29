@@ -1,4 +1,4 @@
-import {Product} from "@core/model/order/product";
+import {Product} from "@core/model/product/product";
 
 export interface OrderItem {
   product: Product;

@@ -2,9 +2,7 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {OrderComponent} from './order.component';
 import {CoreModule} from "@core";
-import {Product} from "@core/model/order/product";
-import {ProductColor} from "@core/model/order/product-color.enum";
-import {ProductSize} from "@core/model/order/product-size.enum";
+import {Product} from "@core/model/product/product";
 import {RootState} from "@core/store/root-state";
 import {OrderStoreActions} from "@core/store/order-store";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
@@ -15,16 +13,18 @@ describe('OrderComponent', () => {
   let fixture: ComponentFixture<OrderComponent>;
   let store: MockStore<RootState>
   let currentOrder = {
-    items: [{amount: 1, product: {color: ProductColor.BLACK, size: ProductSize.XL}}],
+    items: [{amount: 1, product: {color: "BLACK", size: "XL"}}],
     user: null
   };
   let initialState: RootState = {
+    products: null,
     orders: {
       currentOrder,
       error: null,
       isLoading: false,
       orders: []
     }
+
   }
 
   beforeEach(() => {
@@ -58,7 +58,7 @@ describe('OrderComponent', () => {
 
   it("should dispatch the addItemToOrder action if child emits", () => {
     spyOn(store, "dispatch")
-    const product: Product = {color: ProductColor.BLACK, size: ProductSize.XL};
+    const product: Product = {color: "BLACK", size: "XL"};
     component.addItemToOrder(product);
 
     const expectedAction = OrderStoreActions.addItemToOrder({payload: product});

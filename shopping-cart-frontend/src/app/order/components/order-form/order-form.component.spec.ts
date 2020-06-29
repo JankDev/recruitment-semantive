@@ -2,9 +2,7 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {OrderFormComponent} from './order-form.component';
 import {SharedModule} from "@shared";
-import {Product} from "@core/model/order/product";
-import {ProductColor} from "@core/model/order/product-color.enum";
-import {ProductSize} from "@core/model/order/product-size.enum";
+import {Product} from "@core/model/product/product";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 describe('OrderFormComponent', () => {
@@ -34,7 +32,7 @@ describe('OrderFormComponent', () => {
   it("should emit product on save button click", () => {
     spyOn(component.saveProduct, "emit");
 
-    const product: Product = {color: ProductColor.BLACK, size: ProductSize.XL};
+    const product: Product = {color: "BLACK", size: "XL"};
     component.addressForm.setValue({
       name: "adam",
       age: 20,

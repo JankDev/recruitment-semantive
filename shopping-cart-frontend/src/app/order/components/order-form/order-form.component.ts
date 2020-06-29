@@ -1,17 +1,19 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {FormBuilder, Validators} from '@angular/forms';
-import {Product} from "@core/model/order/product";
-import {ProductSize} from "@core/model/order/product-size.enum";
-import {ProductColor} from "@core/model/order/product-color.enum";
+import {Product} from "@core/model/product/product";
 import {User} from "@core/model/order/user";
+
 
 @Component({
   selector: 'order-form',
   templateUrl: './order-form.component.html',
-  styleUrls: ['./order-form.component.scss']
+  styleUrls: ['./order-form.component.scss'],
 })
 export class OrderFormComponent {
   @Input() isValidOrder: boolean;
+  @Input() products: Product[];
+  @Input() productColors: string[];
+  @Input() productSizes: string[];
 
   @Output() saveProduct = new EventEmitter<Product>();
   @Output() submitOrder = new EventEmitter<User>();
@@ -22,9 +24,6 @@ export class OrderFormComponent {
     color: [null, Validators.required],
     size: [null, Validators.required]
   });
-
-  productSizes = Object.values(ProductSize);
-  productColors = Object.values(ProductColor);
 
   constructor(private fb: FormBuilder) {
   }

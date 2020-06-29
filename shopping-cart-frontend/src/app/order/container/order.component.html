@@ -2,6 +2,9 @@
   <order-form
     (submitOrder)="submitOrder($event)"
     (saveProduct)="addItemToOrder($event)"
+    [productColors]="productColors$ | async"
+    [productSizes]="productSizes$ | async"
+    [products]="products$ | async"
     [isValidOrder]="isValidOrder$ | async"
   >
   </order-form>

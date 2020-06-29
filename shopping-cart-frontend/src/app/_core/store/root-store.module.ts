@@ -5,6 +5,7 @@ import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {environment} from '@env';
 import {EffectsModule} from '@ngrx/effects';
 import {OrderStoreModule} from "@core/store/order-store";
+import {ProductStoreModule} from "@core/store/product-store";
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import {OrderStoreModule} from "@core/store/order-store";
     StoreModule.forRoot({}, {}),
     StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production}),
     EffectsModule.forRoot([]),
-    OrderStoreModule
+    OrderStoreModule,
+    ProductStoreModule
   ]
 })
 export class RootStoreModule {
