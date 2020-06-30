@@ -3,8 +3,9 @@ import {RouterModule, Routes} from '@angular/router';
 
 
 const routes: Routes = [
-  {path: "", pathMatch: "full", redirectTo: "order"},
-  {path: "order", loadChildren: () => import("./order/order.module").then(m => m.OrderModule)}
+  {path: "", pathMatch: "full", redirectTo: "orders"},
+  {path: "order", loadChildren: () => import("./order/order.module").then(m => m.OrderModule)},
+  {path: "orders", loadChildren: () => import("./list-orders/list-orders.module").then(m => m.ListOrdersModule)}
 ];
 
 @NgModule({
