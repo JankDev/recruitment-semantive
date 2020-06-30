@@ -13,3 +13,7 @@ export const selectIsLoading = createSelector(
   selectOrderStoreState,
   state => state.isLoading
 )
+export const selectOrders = createSelector(
+  selectOrderStoreState,
+  state => state.orders
+)

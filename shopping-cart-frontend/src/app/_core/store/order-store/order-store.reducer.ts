@@ -25,6 +25,20 @@ export const initialState: State = {
 
 export const reducer = createReducer(
   initialState,
+  on(OrderStoreActions.loadOrders, (state, action) => ({
+    ...state,
+    isLoading: true
+  })),
+  on(OrderStoreActions.loadOrdersSuccess, (state, action) => ({
+    ...state,
+    isLoading: false,
+    orders: action.payload
+  })),
+  on(OrderStoreActions.loadOrdersFailure, (state, action) => ({
+    ...state,
+    isLoading: false,
+    error: action.payload
+  })),
   on(OrderStoreActions.addItemToOrder, (state, action) => {
     const orderItemIndex = state.currentOrder.items.findIndex(item => JSON.stringify(item.product) === JSON.stringify(action.payload));
     const items = state.currentOrder.items;
@@ -75,5 +89,6 @@ export const reducer = createReducer(
     isLoading: false,
     error: action.error
   })),
-);
+  )
+;
 

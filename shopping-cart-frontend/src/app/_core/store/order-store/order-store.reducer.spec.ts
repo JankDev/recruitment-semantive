@@ -2,6 +2,7 @@ import {initialState, reducer} from './order-store.reducer';
 import {OrderStoreActions} from "@core/store/order-store/index";
 import {Product} from "@core/model/product/product";
 import {User} from "@core/model/order/user";
+import {Order} from "@core/model/order/order";
 
 describe('OrderStore Reducer', () => {
   describe('an unknown action', () => {
@@ -61,5 +62,32 @@ describe('OrderStore Reducer', () => {
       expect(result.error).toEqual(error);
     })
   })
+  describe("loadOrders(Success|Failure)", () => {
+    it("should change isLoading to true", () => {
+      const action = OrderStoreActions.loadOrders();
+
+      const result = reducer(initialState, action);
+
+      expect(result.isLoading).toBeTrue();
+    });
+    it("should change isLoading to false if successful and set the orders in the state", () => {
+      const orders = [{user: null, items: [], createdDate: new Date()} as Order];
+      const action = OrderStoreActions.loadOrdersSuccess({payload: orders});
+
+      const result = reducer(initialState, action);
+
+      expect(result.isLoading).toBeFalse();
+      expect(result.orders).toEqual(orders);
+    });
+    it("should change isLoading to false and set error if failure", () => {
+      const error = "Error";
+      const action = OrderStoreActions.loadOrdersFailure({payload: error});
+
+      const result = reducer(initialState, action);
+
+      expect(result.isLoading).toBeFalse();
+      expect(result.error).toEqual(error);
+    })
+  });
 
 });

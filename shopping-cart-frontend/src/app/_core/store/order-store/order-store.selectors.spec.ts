@@ -1,10 +1,12 @@
 import {
   selectCurrentOrder,
   selectIsLoading,
+  selectOrders,
   selectOrderStoreState
 } from "@core/store/order-store/order-store.selectors";
 import * as fromOrderStore from "@core/store/order-store/order-store.reducer";
 import {orderStoreFeatureKey, State} from "@core/store/order-store/order-store.reducer";
+import {Order} from "@core/model/order/order";
 
 describe('OrderStore Selectors', () => {
   let state: State;
@@ -53,5 +55,21 @@ describe('OrderStore Selectors', () => {
         expect(result).toBeTrue();
       }
     );
+  })
+  describe("selectOrders", () => {
+    it("should return the orders", () => {
+      const orders = [{user: null, items: [], createdDate: new Date()} as Order];
+      state = {
+        ...state,
+        orders
+      }
+
+      const result = selectOrders({
+        [orderStoreFeatureKey]: state
+      });
+
+      expect(result).toEqual(orders);
+    });
+
   })
 });

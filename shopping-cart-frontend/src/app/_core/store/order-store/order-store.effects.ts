@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
-import {catchError, concatMap, debounceTime, map, withLatestFrom} from 'rxjs/operators';
+import {catchError, concatMap, debounceTime, map, switchMapTo, withLatestFrom} from 'rxjs/operators';
 import {of} from 'rxjs';
 
 import * as OrderStoreActions from './order-store.actions';
@@ -36,6 +36,14 @@ export class OrderStoreEffects {
       )
     }
   );
+
+  loadOrdersEffect$ = createEffect(() => this.actions$.pipe(
+    ofType(OrderStoreActions.loadOrders),
+    switchMapTo(this.orderService.getAllOrders().pipe(
+      map(orders => OrderStoreActions.loadOrdersSuccess({payload: orders})),
+      catchError(err => of(OrderStoreActions.loadOrdersFailure({payload: err})))
+    ))
+  ))
 
 
   constructor(private actions$: Actions,
