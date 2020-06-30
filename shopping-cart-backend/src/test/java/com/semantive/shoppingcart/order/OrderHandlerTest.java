@@ -26,6 +26,7 @@ import java.time.ZoneId;
 import java.util.Collections;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 
@@ -41,15 +42,13 @@ class OrderHandlerTest {
     private UserRepository userRepository;
 
     private WebTestClient webTestClient;
-    private OrderHandler orderHandler;
 
     private final Clock clock = Clock.fixed(Instant.now(), ZoneId.systemDefault());
 
     @BeforeEach
     void setUp(@Autowired WebTestClient webTestClient, @Autowired OrderHandler orderHandler) {
         this.webTestClient = webTestClient;
-        this.orderHandler = orderHandler;
-        this.orderHandler.setClock(clock);
+        orderHandler.setClock(clock);
     }
 
     @Test
@@ -101,5 +100,37 @@ class OrderHandlerTest {
         var expectedOrderDTO = new OrderDTO(order.getId(), user, order.getCreatedDate());
         response.expectStatus().isOk()
                 .expectBodyList(OrderDTO.class).hasSize(1).contains(expectedOrderDTO);
+    }
+
+    @Test
+    void getOrderInformationShouldReturnStatusNotFoundIfTheGivenOrderDoesNotExist() {
+        //given
+        given(orderRepository.findById(anyInt())).willReturn(Mono.empty());
+
+        //when
+        var response = webTestClient.get()
+                .uri("/api/orders/{orderId}", 1)
+                .exchange();
+
+        //then
+        response.expectStatus().isNotFound();
+    }
+
+    @Test
+    void getOrderInformationShouldReturnStatusOKAndAllOrderItemsAssociatedWithAGivenOrderId() {
+        //given
+        var order = new Order(1, 1, LocalDateTime.now(clock));
+        var orderItem = new OrderItem(1, order.getId(), 1, 2);
+        given(orderRepository.findById(anyInt())).willReturn(Mono.just(order));
+        given(orderItemRepository.findAllByOrderId(order.getId())).willReturn(Flux.just(orderItem));
+
+        //when
+        var response = webTestClient.get()
+                .uri("/api/orders/{orderId}", 2)
+                .exchange();
+
+        //then
+        response.expectStatus().isOk()
+                .expectBodyList(OrderItem.class).hasSize(1).contains(orderItem);
     }
 }

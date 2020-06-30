@@ -53,4 +53,13 @@ public class OrderHandler {
                         .map(tuple -> new OrderDTO(tuple.getT1().getId(), tuple.getT2(), tuple.getT1().getCreatedDate())), OrderDTO.class
         );
     }
+
+    public Mono<ServerResponse> getOrderInformation(ServerRequest request) {
+        return orderRepository.findById(Integer.parseInt(request.pathVariable("orderId")))
+                .flatMapMany(order -> orderItemRepository.findAllByOrderId(order.getId()))
+                .collectList()
+                .filter(list -> !list.isEmpty())
+                .flatMap(orderItems -> ServerResponse.ok().bodyValue(orderItems))
+                .switchIfEmpty(ServerResponse.notFound().build());
+    }
 }

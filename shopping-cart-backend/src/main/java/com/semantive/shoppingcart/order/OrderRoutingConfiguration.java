@@ -17,6 +17,7 @@ public class OrderRoutingConfiguration {
         return route().nest(path("/api/orders").and(accept(MediaType.APPLICATION_JSON)), builder -> {
             builder.POST("/", contentType(MediaType.APPLICATION_JSON), orderHandler::saveOrder);
             builder.GET("/", orderHandler::getAllOrders);
+            builder.GET("/{orderId}",orderHandler::getOrderInformation);
         }).build();
     }
 }
