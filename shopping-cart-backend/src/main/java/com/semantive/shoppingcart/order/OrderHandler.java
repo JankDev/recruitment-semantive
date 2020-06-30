@@ -1,5 +1,7 @@
 package com.semantive.shoppingcart.order;
 
+import com.semantive.shoppingcart.order.dtos.NewOrderDTO;
+import com.semantive.shoppingcart.order.dtos.OrderDTO;
 import com.semantive.shoppingcart.user.UserRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
@@ -42,5 +44,13 @@ public class OrderHandler {
                         ), OrderItem.class)
                 .onErrorResume(e -> ServerResponse.badRequest().build());
 
+    }
+
+    public Mono<ServerResponse> getAllOrders(ServerRequest request) {
+        return ServerResponse.ok().body(
+                orderRepository.findAll()
+                        .zipWith(userRepository.findAll())
+                        .map(tuple -> new OrderDTO(tuple.getT1().getId(), tuple.getT2(), tuple.getT1().getCreatedDate())), OrderDTO.class
+        );
     }
 }

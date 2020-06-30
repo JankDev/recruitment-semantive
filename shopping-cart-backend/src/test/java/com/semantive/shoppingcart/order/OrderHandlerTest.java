@@ -1,5 +1,7 @@
 package com.semantive.shoppingcart.order;
 
+import com.semantive.shoppingcart.order.dtos.NewOrderDTO;
+import com.semantive.shoppingcart.order.dtos.OrderDTO;
 import com.semantive.shoppingcart.product.Product;
 import com.semantive.shoppingcart.user.User;
 import com.semantive.shoppingcart.user.UserRepository;
@@ -13,6 +15,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Hooks;
 import reactor.core.publisher.Mono;
 
@@ -79,5 +82,24 @@ class OrderHandlerTest {
         Mockito.verify(orderItemRepository, times(1)).save(orderItem.withOrderId(1));
         Mockito.verify(orderRepository, times(1)).save(order);
         Mockito.verify(userRepository, times(1)).save(user);
+    }
+
+    @Test
+    void getAllOrdersShouldReturnAListOfOrderDTOCombinedOfUsersAndOrders() {
+        //given
+        var order = new Order(1, 1, LocalDateTime.now(clock));
+        var user = new User(1, "Robert", (short) 20);
+        given(orderRepository.findAll()).willReturn(Flux.just(order));
+        given(userRepository.findAll()).willReturn(Flux.just(user));
+
+        //when
+        var response = webTestClient.get()
+                .uri("/api/orders")
+                .exchange();
+
+        //then
+        var expectedOrderDTO = new OrderDTO(order.getId(), user, order.getCreatedDate());
+        response.expectStatus().isOk()
+                .expectBodyList(OrderDTO.class).hasSize(1).contains(expectedOrderDTO);
     }
 }
