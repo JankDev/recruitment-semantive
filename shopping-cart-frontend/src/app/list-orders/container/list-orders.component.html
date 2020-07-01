@@ -1,3 +1,6 @@
 <app-layout>
-  <order-list></order-list>
+  <order-list
+    (search)="loadOrders()"
+    [orders]="orders$ | async"
+  ></order-list>
 </app-layout>

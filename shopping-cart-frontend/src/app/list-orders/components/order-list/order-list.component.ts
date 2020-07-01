@@ -1,30 +1,20 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
-import {MatPaginator} from '@angular/material/paginator';
-import {MatSort} from '@angular/material/sort';
-import {MatTable} from '@angular/material/table';
-import {OrderListDataSource, OrderListItem} from './order-list-datasource';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Order} from "@core/model/order/order";
 
 @Component({
   selector: 'order-list',
   templateUrl: './order-list.component.html',
   styleUrls: ['./order-list.component.scss']
 })
-export class OrderListComponent implements AfterViewInit, OnInit {
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatTable) table: MatTable<OrderListItem>;
-  dataSource: OrderListDataSource;
+export class OrderListComponent {
+  @Input() orders: Order[];
 
-  /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['id', 'name'];
+  @Output() search = new EventEmitter<void>();
 
-  ngOnInit() {
-    this.dataSource = new OrderListDataSource();
-  }
+  displayedColumns = ['user', 'createdDate'];
+  dateFormat = 'HH:mm dd.MM.yyyy';
 
-  ngAfterViewInit() {
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
-    this.table.dataSource = this.dataSource;
+  searchOrders(): void {
+    this.search.emit();
   }
 }
