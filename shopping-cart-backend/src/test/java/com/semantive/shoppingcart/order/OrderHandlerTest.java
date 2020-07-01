@@ -2,7 +2,9 @@ package com.semantive.shoppingcart.order;
 
 import com.semantive.shoppingcart.order.dtos.NewOrderDTO;
 import com.semantive.shoppingcart.order.dtos.OrderDTO;
+import com.semantive.shoppingcart.order.dtos.OrderItemDTO;
 import com.semantive.shoppingcart.product.Product;
+import com.semantive.shoppingcart.product.ProductRepository;
 import com.semantive.shoppingcart.user.User;
 import com.semantive.shoppingcart.user.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,6 +42,8 @@ class OrderHandlerTest {
     private OrderItemRepository orderItemRepository;
     @MockBean
     private UserRepository userRepository;
+    @MockBean
+    private ProductRepository productRepository;
 
     private WebTestClient webTestClient;
 
@@ -120,9 +124,12 @@ class OrderHandlerTest {
     void getOrderInformationShouldReturnStatusOKAndAllOrderItemsAssociatedWithAGivenOrderId() {
         //given
         var order = new Order(1, 1, LocalDateTime.now(clock));
-        var orderItem = new OrderItem(1, order.getId(), 1, 2);
+        var product = new Product("white", "xxl", 2);
+        product.setId(1);
+        var orderItem = new OrderItem(1, order.getId(), product.getId(), 2);
         given(orderRepository.findById(anyInt())).willReturn(Mono.just(order));
         given(orderItemRepository.findAllByOrderId(order.getId())).willReturn(Flux.just(orderItem));
+        given(productRepository.findById(anyInt())).willReturn(Mono.just(product));
 
         //when
         var response = webTestClient.get()
@@ -130,7 +137,8 @@ class OrderHandlerTest {
                 .exchange();
 
         //then
+        var result = new OrderItemDTO(order.getId(),product,orderItem.getAmount());
         response.expectStatus().isOk()
-                .expectBodyList(OrderItem.class).hasSize(1).contains(orderItem);
+                .expectBodyList(OrderItemDTO.class).hasSize(1).contains(result);
     }
 }

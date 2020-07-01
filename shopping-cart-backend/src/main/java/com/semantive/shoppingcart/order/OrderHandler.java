@@ -2,6 +2,8 @@ package com.semantive.shoppingcart.order;
 
 import com.semantive.shoppingcart.order.dtos.NewOrderDTO;
 import com.semantive.shoppingcart.order.dtos.OrderDTO;
+import com.semantive.shoppingcart.order.dtos.OrderItemDTO;
+import com.semantive.shoppingcart.product.ProductRepository;
 import com.semantive.shoppingcart.user.UserRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
@@ -17,12 +19,14 @@ public class OrderHandler {
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
     private final UserRepository userRepository;
+    private final ProductRepository productRepository;
     private Clock clock;
 
-    public OrderHandler(OrderRepository orderRepository, OrderItemRepository orderItemRepository, UserRepository userRepository) {
+    public OrderHandler(OrderRepository orderRepository, OrderItemRepository orderItemRepository, UserRepository userRepository, ProductRepository productRepository) {
         this.orderRepository = orderRepository;
         this.orderItemRepository = orderItemRepository;
         this.userRepository = userRepository;
+        this.productRepository = productRepository;
         this.clock = Clock.systemDefaultZone();
     }
 
@@ -57,6 +61,9 @@ public class OrderHandler {
     public Mono<ServerResponse> getOrderInformation(ServerRequest request) {
         return orderRepository.findById(Integer.parseInt(request.pathVariable("orderId")))
                 .flatMapMany(order -> orderItemRepository.findAllByOrderId(order.getId()))
+                .flatMap(orderItem -> productRepository.findById(orderItem.getId())
+                        .map(product -> new OrderItemDTO(orderItem.getOrderId(), product, orderItem.getAmount()))
+                )
                 .collectList()
                 .filter(list -> !list.isEmpty())
                 .flatMap(orderItems -> ServerResponse.ok().bodyValue(orderItems))

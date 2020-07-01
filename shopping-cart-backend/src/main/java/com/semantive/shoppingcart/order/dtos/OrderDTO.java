@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Value
 public class OrderDTO {
-    int orderId;
+    int id;
     User user;
     LocalDateTime createdDate;
 }
