@@ -20,9 +20,11 @@ export class OrderFormComponent {
   @Output() saveProduct = new EventEmitter<Product>();
   @Output() submitOrder = new EventEmitter<User>();
 
+  maxAge = 100;
+  minAge = 18;
   addressForm = this.fb.group({
-    name: [null, Validators.required],
-    age: [null, Validators.required],
+    name: [null, [Validators.required, Validators.pattern("^[A-Z][a-zA-Z]*")]],
+    age: [null, [Validators.required, Validators.min(this.minAge), Validators.max(this.maxAge)]],
     color: [null, Validators.required],
     size: [null, Validators.required]
   });
@@ -36,8 +38,10 @@ export class OrderFormComponent {
       name: this.addressForm.controls["name"].value
     }
 
-    this.submitOrder.emit(user);
-    this.addressForm.reset();
+    if (this.addressForm.valid) {
+      this.submitOrder.emit(user);
+      this.addressForm.reset();
+    }
   }
 
   save(): void {

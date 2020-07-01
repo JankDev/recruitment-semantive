@@ -14,6 +14,9 @@
             <mat-error *ngIf="addressForm.controls['name'].hasError('required')">
               Your name is <strong>required</strong>
             </mat-error>
+            <mat-error *ngIf="addressForm.controls['name'].hasError('pattern')">
+              Your name can only be 1 word, must begin with a capital letter and only contain characters
+            </mat-error>
           </mat-form-field>
         </div>
         <div class="col">
@@ -23,6 +26,10 @@
             </label>
             <mat-error *ngIf="addressForm.controls['age'].hasError('required')">
               Age is <strong>required</strong>
+            </mat-error>
+            <mat-error *ngIf="addressForm.controls['age'].hasError('min') ||
+                              addressForm.controls['age'].hasError('max')">
+              Age must be between <strong>{{minAge}}</strong> and <strong>{{maxAge}}</strong>
             </mat-error>
           </mat-form-field>
         </div>
