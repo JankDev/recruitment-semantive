@@ -38,7 +38,7 @@ export class OrderStoreEffects {
             return OrderStoreActions.submitOrderSuccess({payload: items});
           }),
           catchError(err => {
-            this.snackBar.open(err, null, {panelClass: ['mat-toolbar', 'mat-warn']});
+            this.snackBar.open("An error occurred, look into the console", null, {panelClass: ['mat-toolbar', 'mat-warn']});
             return of(OrderStoreActions.submitOrderFailure(err));
           })
           )
