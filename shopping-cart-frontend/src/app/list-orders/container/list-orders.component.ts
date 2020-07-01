@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {RootState} from "@core/store/root-state";
 import {select, Store} from "@ngrx/store";
 import {OrderStoreActions, OrderStoreSelectors} from "@core/store/order-store";
+import {map} from "rxjs/operators";
+import {OrderTableItem} from "../components/order-list";
 
 @Component({
   selector: 'app-list-orders',
@@ -10,7 +12,8 @@ import {OrderStoreActions, OrderStoreSelectors} from "@core/store/order-store";
 })
 export class ListOrdersComponent implements OnInit {
   orders$ = this.store.pipe(
-    select(OrderStoreSelectors.selectOrders)
+    select(OrderStoreSelectors.selectOrders),
+    map(orders => orders.map(order => ({order, isExpanded: order.items || false} as OrderTableItem))),
   );
 
   constructor(private store: Store<RootState>) {
@@ -22,5 +25,9 @@ export class ListOrdersComponent implements OnInit {
 
   loadOrders(): void {
     this.store.dispatch(OrderStoreActions.loadOrders());
+  }
+
+  loadOrderInformation(orderId: number): void {
+    this.store.dispatch(OrderStoreActions.displayOrderInformation({payload: orderId}));
   }
 }

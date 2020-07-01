@@ -89,6 +89,27 @@ export const reducer = createReducer(
     isLoading: false,
     error: action.error
   })),
-  )
-;
+  on(OrderStoreActions.displayOrderInformation, (state, action) => ({
+    ...state,
+    isLoading: true
+  })),
+  on(OrderStoreActions.displayOrderInformationSuccess, (state, action) => ({
+    ...state,
+    isLoading: false,
+    orders: state.orders.map(order => {
+      if (order.id === action.payload[0].orderId) {
+        return {
+          ...order,
+          items: action.payload
+        }
+      }
+      return order;
+    })
+  })),
+  on(OrderStoreActions.displayOrderInformationFailure, (state, action) => ({
+    ...state,
+    isLoading: false,
+    error: action.payload
+  }))
+);
 

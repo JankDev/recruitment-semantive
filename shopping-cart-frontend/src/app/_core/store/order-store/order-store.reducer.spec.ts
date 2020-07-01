@@ -1,8 +1,9 @@
-import {initialState, reducer} from './order-store.reducer';
+import {initialState, reducer, State} from './order-store.reducer';
 import {OrderStoreActions} from "@core/store/order-store/index";
 import {Product} from "@core/model/product/product";
 import {User} from "@core/model/order/user";
 import {Order} from "@core/model/order/order";
+import {OrderItem} from "@core/model/order/order-item";
 
 describe('OrderStore Reducer', () => {
   describe('an unknown action', () => {
@@ -89,5 +90,21 @@ describe('OrderStore Reducer', () => {
       expect(result.error).toEqual(error);
     })
   });
+  describe("displayOrderInformation", () => {
+    it("should set the items of an order with a given id and set isLoading to false if successful", () => {
+      const order: Order = {id: 1, items: [], createdDate: null, user: null};
+      const payload = [{orderId: order.id, amount: 2, product: null} as OrderItem];
+      const action = OrderStoreActions.displayOrderInformationSuccess({payload});
+
+      const state: State = {
+        ...initialState,
+        orders: [order]
+      }
+
+      const result = reducer(state, action);
+
+      expect(result.orders[0].items).toEqual(payload);
+    })
+  })
 
 });

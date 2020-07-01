@@ -1,6 +1,7 @@
 import {
   selectCurrentOrder,
   selectIsLoading,
+  selectOrderById,
   selectOrders,
   selectOrderStoreState
 } from "@core/store/order-store/order-store.selectors";
@@ -70,6 +71,20 @@ describe('OrderStore Selectors', () => {
 
       expect(result).toEqual(orders);
     });
+    describe("selectOrderById", () => {
+      it("should return the order from the orders array with the given id", () => {
+        const order = {id: 1, user: null, items: [], createdDate: new Date()} as Order;
+        state = {
+          ...state,
+          orders: [order]
+        }
 
-  })
+        const result = selectOrderById({
+          [orderStoreFeatureKey]: state
+        }, order.id);
+
+        expect(result).toEqual(order);
+      })
+    });
+  });
 });

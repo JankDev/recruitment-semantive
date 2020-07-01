@@ -37,3 +37,18 @@ export const submitOrderFailure = createAction(
   '[OrderStore] Submit Order Failure',
   props<{ error: string }>()
 );
+
+export const displayOrderInformation = createAction(
+  '[OrderStore] Display Order Information',
+  props<{ payload: number }>()
+)
+
+export const displayOrderInformationSuccess = createAction(
+  '[OrderStore] Display Order Information Success',
+  props<{ payload: OrderItem[] }>()
+)
+
+export const displayOrderInformationFailure = createAction(
+  '[OrderStore] Display Order Information Failure',
+  props<{ payload: string }>()
+)

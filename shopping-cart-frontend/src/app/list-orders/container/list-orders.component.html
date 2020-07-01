@@ -1,6 +1,7 @@
 <app-layout>
   <order-list
     (search)="loadOrders()"
-    [orders]="orders$ | async"
+    (expand)="loadOrderInformation($event)"
+    [orderRows]="orders$ | async"
   ></order-list>
 </app-layout>

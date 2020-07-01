@@ -21,4 +21,8 @@ export class OrderService {
   getAllOrders(): Observable<Order[]> {
     return this.http.get<Order[]>(this.ordersUrl);
   }
+
+  getOrderInformation(orderId: number): Observable<OrderItem[]> {
+    return this.http.get<OrderItem[]>(`${this.ordersUrl}/${orderId}`);
+  }
 }

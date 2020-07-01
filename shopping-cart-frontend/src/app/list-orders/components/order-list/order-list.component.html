@@ -1,18 +1,39 @@
 <div class="mat-elevation-z8">
   <button (click)="searchOrders()" color="accent" mat-raised-button>Search</button>
-  <table [dataSource]="orders" aria-label="Elements" class="full-width-table" mat-table matSort>
+  <table [dataSource]="orderRows" aria-label="Elements" mat-table matSort multiTemplateDataRows>
     <ng-container matColumnDef="user">
       <th *matHeaderCellDef mat-header-cell mat-sort-header>User</th>
-      <td *matCellDef="let order" mat-cell>Name: {{order.user.name}} Age: {{order.user.age}}</td>
+      <td *matCellDef="let row" mat-cell>Name: {{row.order.user.name}} Age: {{row.order.user.age}}</td>
     </ng-container>
 
     <ng-container matColumnDef="createdDate">
       <th *matHeaderCellDef mat-header-cell mat-sort-header>Created date</th>
-      <td *matCellDef="let order" mat-cell>{{order.createdDate | date: dateFormat}}</td>
+      <td *matCellDef="let row" mat-cell>{{row.order.createdDate | date: dateFormat}}</td>
     </ng-container>
 
-    <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
-    <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+    <ng-container matColumnDef="expandedDetail">
+      <td *matCellDef="let row" [attr.colspan]="displayedColumns.length" mat-cell>
+        <div [@detailExpand]="row.isExpanded ? 'expanded' : 'collapsed'" class="row order-element-detail">
+          <mat-list>
+            <div mat-subheader>Items:</div>
+            <mat-list-item *ngFor="let item of row.order.items">
+              <div mat-line>Product: {{item.product.color}} {{item.product.size}} Amount: {{item.amount}}</div>
+            </mat-list-item>
+          </mat-list>
+        </div>
+
+      </td>
+    </ng-container>
+
+    <tr *matHeaderRowDef="displayedColumns;sticky: true" mat-header-row></tr>
+    <tr (click)="expandOrderRow(row)"
+        *matRowDef="let row; columns: displayedColumns;"
+        [class.order-expanded-row]="row.isExpanded"
+        class="order-element-row"
+        mat-row
+    >
+    </tr>
+    <tr *matRowDef="let row; columns: ['expandedDetail']" class="order-detail-row" mat-row></tr>
   </table>
-  <div *ngIf="orders.length === 0" class="no-records">No records</div>
+  <div *ngIf="orderRows.length === 0" class="no-records">No records</div>
 </div>

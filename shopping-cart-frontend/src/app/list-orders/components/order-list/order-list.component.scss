@@ -1,4 +1,4 @@
-.full-width-table {
+table {
   width: 100%;
 }
 
@@ -7,4 +7,29 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+tr.order-detail-row {
+  height: 0;
+}
+
+tr.order-element-row:not(.order-expanded-row):hover {
+  cursor: pointer;
+  background-color: gray;
+}
+
+tr.order-element-row:not(.order-expanded-row):active {
+  background: #efefef;
+}
+
+.order-element-row td {
+  border-bottom-width: 0;
+}
+
+.order-element-detail {
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
 }

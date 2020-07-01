@@ -1,6 +1,16 @@
 import {Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
-import {catchError, concatMap, debounceTime, map, switchMapTo, withLatestFrom} from 'rxjs/operators';
+import {
+  catchError,
+  concatMap,
+  debounceTime,
+  filter,
+  flatMap,
+  map,
+  switchMap,
+  switchMapTo,
+  withLatestFrom
+} from 'rxjs/operators';
 import {of} from 'rxjs';
 
 import * as OrderStoreActions from './order-store.actions';
@@ -10,7 +20,7 @@ import {select, Store} from "@ngrx/store";
 import {Order} from "@core/model/order/order";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {successfulSubmitMessage} from "../../../../assets/messages";
-import {selectCurrentOrder} from "@core/store/order-store/order-store.selectors";
+import {selectCurrentOrder, selectOrderById} from "@core/store/order-store/order-store.selectors";
 
 
 @Injectable()
@@ -42,6 +52,16 @@ export class OrderStoreEffects {
     switchMapTo(this.orderService.getAllOrders().pipe(
       map(orders => OrderStoreActions.loadOrdersSuccess({payload: orders})),
       catchError(err => of(OrderStoreActions.loadOrdersFailure({payload: err})))
+    ))
+  ))
+
+  displayOrderInformationEffect$ = createEffect(() => this.actions$.pipe(
+    ofType(OrderStoreActions.displayOrderInformation),
+    flatMap(action => this.store.pipe(select(selectOrderById, action.payload))),
+    filter((selectedOrder: Order) => !selectedOrder.items),
+    switchMap((order: Order) => this.orderService.getOrderInformation(order.id).pipe(
+      map(items => OrderStoreActions.displayOrderInformationSuccess({payload: items})),
+      catchError(err => of(OrderStoreActions.displayOrderInformationFailure({payload: err})))
     ))
   ))
 
